@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./
+    command: ./app
+    ports:
+      - "50051:50051"
+    networks:
+      -
+
+networks:
+  one_edu_backend:
+    external: true

@@ -3,6 +3,7 @@ package service
 import (
 	"awesomeProject/internal/models"
 	"awesomeProject/internal/storage"
+	pb "awesomeProject/proto"
 	"context"
 	uuid "github.com/google/uuid"
 	"time"
@@ -18,8 +19,11 @@ func NewTransactionService(repo *storage.Storage) *TransactionService {
 	}
 }
 
-func (s *TransactionService) Create(ctx context.Context, transaction *models.Transaction) (string, error) {
+func (s *TransactionService) Create(ctx context.Context, transaction *models.Transaction, in pb.Transaction) (string, error) {
 	transaction.ID = uuid.NewString()
+	transaction.ItemID = string(in.ItemId)
+	transaction.UserID = string(in.UserId)
+	transaction.PaymentAmount = float64(in.Price)
 	transaction.PaymentTime = time.Now()
 	return s.repo.Transaction.Create(ctx, transaction)
 }
